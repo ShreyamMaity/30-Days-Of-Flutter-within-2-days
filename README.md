@@ -1,15 +1,24 @@
-# test_application
+<p align=center>
+<image src = "./web/icons/Icon-192.png" width = 150 >
+</p>
 
-A new Flutter project.
+- - -
+
+# <p align=center> 30 days of Flutter Within 2 Days </p>
+> A new Flutter project. For Learning purposes.
 
 ## Getting Started
 
 This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+---
 
+### Resources :
 - [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- [Course Link](https://www.youtube.com/watch?v=j-LOab_PzzU)
+
+- - -
 
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
