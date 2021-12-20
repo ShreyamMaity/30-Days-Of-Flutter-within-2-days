@@ -22,10 +22,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.deepOrange,
         fontFamily: GoogleFonts.lato().fontFamily,
       ),
-      // debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,
       darkTheme: ThemeData(brightness: Brightness.dark
       ),
-      initialRoute: MyRoutes.loginRoute,
+      initialRoute: MyRoutes.homeRoute,
       routes: {
         MyRoutes.homeRoute : (context) => Homepage(),
         MyRoutes.loginRoute: (context) => LoginPage(),

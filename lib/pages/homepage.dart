@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_application/widgets/drawer.dart';
 
 
 class Homepage extends StatelessWidget {
@@ -20,7 +21,7 @@ class Homepage extends StatelessWidget {
             child: Text('welcome to flutter within $time by $text and $isTrue and this is num $num ..Let\'s see a var $day'),
           ),
         ), 
-        drawer: Drawer(),
+        drawer: MyDrawer(),
     );
   }
 }
