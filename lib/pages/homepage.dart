@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, deprecated_member_use
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,13 +44,13 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyTheme.creamColor,
+      backgroundColor: context.canvasColor,
       floatingActionButton: FloatingActionButton(
         onPressed: (){
           Navigator.pushNamed(context, MyRoutes.cartRoute);
       },
-      backgroundColor: MyTheme.darkBluishColor,
-      child: Icon(CupertinoIcons.cart),),
+      backgroundColor: context.theme.buttonColor,
+      child: Icon(CupertinoIcons.cart,color: Colors.white,) ),
       body: SafeArea(
         child: Container(
           padding: Vx.m32,

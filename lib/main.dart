@@ -21,11 +21,11 @@ class MyApp extends StatelessWidget {
     
     return MaterialApp(
       // home: Homepage(),
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.system,
       theme: MyTheme.lightTheme(context),
       debugShowCheckedModeBanner: false,
       darkTheme: MyTheme.darkTheme(context),
-      initialRoute: MyRoutes.homeRoute,
+      initialRoute: MyRoutes.loginRoute,
       routes: {
         MyRoutes.homeRoute : (context) => Homepage(),
         MyRoutes.loginRoute: (context) => LoginPage(),
