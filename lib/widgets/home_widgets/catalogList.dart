@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:velocity_x/velocity_x.dart';
+
+import 'package:test_application/models/cart.dart';
 import 'package:test_application/models/catalogue.dart';
 import 'package:test_application/pages/homeDetailPage.dart';
 import 'package:test_application/widgets/themes.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 import 'catalogImage.dart';
-
-
 
 class CatalogList extends StatelessWidget {
   const CatalogList({ Key? key }) : super(key: key);
@@ -53,15 +53,7 @@ class CatalogItem extends StatelessWidget {
               buttonPadding: EdgeInsets.zero,
               children: [
                 "\$${catalog.price}".text.bold.xl.make(),
-                ElevatedButton(
-                  onPressed: (){},
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(context.theme.buttonColor),
-                    shape: MaterialStateProperty.all(StadiumBorder()),
-                  ),
-                  
-                   child: "Add to cart".text.make()
-                   )
+                _AddToCart(catalog: catalog),
               ],
             ).pOnly(right: 8),
           ],)
@@ -69,5 +61,41 @@ class CatalogItem extends StatelessWidget {
         ],
       )
     ).rounded.color(context.cardColor).square(150).make().py16();
+  }
+}
+
+class _AddToCart extends StatefulWidget {
+  final Item catalog;
+  const _AddToCart({
+    Key? key,
+    required this.catalog,
+  }) : super(key: key);
+
+  @override
+  State<_AddToCart> createState() => _AddToCartState();
+}
+
+class _AddToCartState extends State<_AddToCart> {
+
+  bool isAdded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: (){
+        isAdded = isAdded.toggle();
+        final _catalog = CatalogueModel();
+        final _cart = CartModel();
+        _cart.add(widget.catalog);
+        _cart.catalog = _catalog;
+        setState(() {});
+      },
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(context.theme.buttonColor),
+        shape: MaterialStateProperty.all(StadiumBorder()),
+      ),
+      
+       child: isAdded? Icon(Icons.done): "Add to cart".text.make()
+       );
   }
 }
