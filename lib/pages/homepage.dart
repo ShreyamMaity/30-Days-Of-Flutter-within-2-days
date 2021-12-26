@@ -3,6 +3,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:test_application/core/store.dart';
+import 'package:test_application/models/cart.dart';
 import 'dart:convert';
 import 'package:test_application/models/catalogue.dart';
 import 'package:test_application/utils/routes.dart';
@@ -12,6 +14,7 @@ import 'package:test_application/widgets/home_widgets/catalogList.dart';
 import 'package:test_application/widgets/itemWidget.dart';
 import 'package:test_application/widgets/themes.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:http/http.dart' as http;
 
 
 
@@ -24,6 +27,8 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   // final dummyList = List.generate(20, (index) => CatalogueModel.items[0]);
+  final url = 'https://api.jsonbin.io/v3/b/61c85649c3255223966a27ed';
+  var headers = {'X-Master-Key': '\$2b\$10\$TtfHmEGuUR1FbPotpOexn.Bci.BKZexlEH8C6ffaVcjZdR6r7cO4O'};
 
   @override
   void initState() {
@@ -34,23 +39,41 @@ class _HomepageState extends State<Homepage> {
 
   loadData() async {
     await Future.delayed(Duration(seconds: 2));
-    final catalogJson = await rootBundle.loadString("./assets/files/catalog.json");
+    // final catalogJson = await rootBundle.loadString("./assets/files/catalog.json");
+
+    // final response = await http.get(Uri.parse(url));
+
+    var request = http.Request('GET', Uri.parse(url));
+    request.headers.addAll(headers);
+    final response = await request.send();
+    final catalogJson = await response.stream.bytesToString();
+
     final decodedData = jsonDecode(catalogJson);
-    var productsData = decodedData["products"];
+    var data = decodedData['record'];
+    var productsData = data["products"];
     CatalogueModel.items = List.from(productsData).map<Item>((item) => Item.fromMap(item)).toList();
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+
+    final _cart = (VxState.store as MyStore).cart;
+
     return Scaffold(
       backgroundColor: context.canvasColor,
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          Navigator.pushNamed(context, MyRoutes.cartRoute);
-      },
-      backgroundColor: context.theme.buttonColor,
-      child: Icon(CupertinoIcons.cart,color: Colors.white,) ),
+      floatingActionButton: VxBuilder(
+        mutations: {AddMutation,RemoveMutation},
+        builder:(ctx,context,status) =>  FloatingActionButton(
+          onPressed: (){
+            Navigator.pushNamed(ctx, MyRoutes.cartRoute);
+        },
+        backgroundColor: ctx.theme.buttonColor,
+        child: Icon(CupertinoIcons.cart,color: Colors.white,) ).badge(size:  22, count: _cart.items.length, textStyle: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+        )),
+      ),
       body: SafeArea(
         child: Container(
           padding: Vx.m32,

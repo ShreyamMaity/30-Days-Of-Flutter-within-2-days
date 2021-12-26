@@ -47,10 +47,10 @@ class HomeDetailPage extends StatelessWidget {
                 child: Column(
                   children: [
                     catalog.name.text.xl4.color(context.accentColor).bold.make(),
-                    catalog.desc.text.textStyle(context.captionStyle).xl.make(),
+                    catalog.desc.text.xl.make(),
                     10.heightBox,
                     "Labore lorem no consetetur erat sed dolor. Labore lorem no eos amet ipsum, et dolor duo et elitr sanctus kasd sea nonumy dolores, sea sed no magna aliquyam, elitr sadipscing clita ipsum sanctus ea duo erat lorem, aliquyam elitr no nonumy labore voluptua sea clita sea, nonumy dolor aliquyam consetetur."
-                    .text.textStyle(context.captionStyle).make().p16()
+                    .text.make().p16()
                   ],
                   ).py64(),
               ),
