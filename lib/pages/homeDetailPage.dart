@@ -1,6 +1,7 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:flutter/material.dart';
 import 'package:test_application/widgets/home_widgets/addToCart.dart';
-import 'package:test_application/widgets/themes.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'package:test_application/models/catalogue.dart';

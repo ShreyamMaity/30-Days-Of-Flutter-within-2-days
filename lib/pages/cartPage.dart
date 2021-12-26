@@ -1,6 +1,7 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:flutter/material.dart';
 import 'package:test_application/models/cart.dart';
-import 'package:test_application/widgets/themes.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class Cartpage extends StatelessWidget {
@@ -51,14 +52,7 @@ class _CartTotal extends StatelessWidget {
 }
 
 
-class _CartList extends StatefulWidget {
-  const _CartList({ Key? key }) : super(key: key);
-
-  @override
-  State<_CartList> createState() => _CartListState();
-}
-
-class _CartListState extends State<_CartList> {
+class _CartList extends StatelessWidget {
   final _cart = CartModel();
 
   @override
@@ -71,8 +65,7 @@ class _CartListState extends State<_CartList> {
           icon : Icon(Icons.remove_circle_outline),
           onPressed: (){
             _cart.remove(_cart.items[index]);
-            setState(() {
-            });
+            
           },
           ),
         title: _cart.items[index].name.text.make(),

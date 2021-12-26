@@ -2,10 +2,10 @@ import 'package:test_application/models/catalogue.dart';
 
 class CartModel{
 
-  static final cartModel = CartModel._internal(); 
+  // static final cartModel = CartModel._internal(); 
 
-  CartModel._internal();
-  factory CartModel() => cartModel;
+  // CartModel._internal();
+  // factory CartModel() => cartModel;
 
   //catalog field
   late CatalogueModel _catalog;

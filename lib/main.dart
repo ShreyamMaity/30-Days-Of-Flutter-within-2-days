@@ -2,14 +2,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:test_application/core/store.dart';
 import 'package:test_application/pages/cartPage.dart';
 import 'package:test_application/pages/homepage.dart';
 import 'package:test_application/pages/loginPage.dart';
 import 'package:test_application/utils/routes.dart';
 import 'package:test_application/widgets/themes.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(VxState(
+    store: MyStore(),
+    child: MyApp())
+    );
   
 }
 
