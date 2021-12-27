@@ -2,7 +2,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:test_application/core/store.dart';
 import 'package:test_application/models/cart.dart';
 import 'dart:convert';
@@ -11,14 +10,13 @@ import 'package:test_application/utils/routes.dart';
 import 'package:test_application/widgets/drawer.dart';
 import 'package:test_application/widgets/home_widgets/catalogHeader.dart';
 import 'package:test_application/widgets/home_widgets/catalogList.dart';
-import 'package:test_application/widgets/itemWidget.dart';
-import 'package:test_application/widgets/themes.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:http/http.dart' as http;
 
 
 
 class Homepage extends StatefulWidget {
+  
   const Homepage({ Key? key }) : super(key: key);
 
   @override
@@ -61,6 +59,7 @@ class _HomepageState extends State<Homepage> {
     final _cart = (VxState.store as MyStore).cart;
 
     return Scaffold(
+      drawer: MyDrawer(),
       backgroundColor: context.canvasColor,
       floatingActionButton: VxBuilder(
         mutations: {AddMutation,RemoveMutation},
@@ -89,6 +88,7 @@ class _HomepageState extends State<Homepage> {
           ],),
         ),
       ),
+      
     );
   }
 }

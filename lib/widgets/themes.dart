@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class MyTheme{
+
   static ThemeData lightTheme(BuildContext context) => ThemeData(
-        primarySwatch: Colors.deepOrange,
+        primarySwatch: Colors.deepPurple,
         fontFamily: GoogleFonts.poppins().fontFamily,
         cardColor: Colors.white,
         canvasColor: creamColor,
@@ -39,6 +39,8 @@ class MyTheme{
           // titleTextStyle: Theme.of(context).textTheme.headline6,
         )
       );
+
+  
 
       //colors
       static Color creamColor = Color(0xfff5f5f5);
