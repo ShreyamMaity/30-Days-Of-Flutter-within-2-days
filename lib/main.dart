@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unused_import, import_of_legacy_library_into_null_safe
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,6 +18,7 @@ import 'package:test_application/widgets/themes.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
+  await dotenv.load(fileName: ".env");
   runApp(VxState(
     store: MyStore(),
     child: MyApp())

@@ -11,6 +11,7 @@ import 'package:test_application/widgets/drawer.dart';
 import 'package:test_application/widgets/home_widgets/catalogHeader.dart';
 import 'package:test_application/widgets/home_widgets/catalogList.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 
@@ -25,8 +26,8 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   // final dummyList = List.generate(20, (index) => CatalogueModel.items[0]);
-  final url = 'https://api.jsonbin.io/v3/b/61c85649c3255223966a27ed';
-  var headers = {'X-Master-Key': '\$2b\$10\$TtfHmEGuUR1FbPotpOexn.Bci.BKZexlEH8C6ffaVcjZdR6r7cO4O'};
+  final url = dotenv.env['databaseAPI'].toString();
+  var headers = {'X-Master-Key': dotenv.env['databaseAPIKey'].toString()};
 
   @override
   void initState() {
