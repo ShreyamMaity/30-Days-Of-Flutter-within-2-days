@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_const_declarations, non_constant_identifier_names, prefer_const_constructors, dead_code
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
+import 'package:test_application/utils/authService.dart';
+import 'package:test_application/utils/routes.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:test_application/widgets/themeCrontoller.dart';
 
@@ -9,6 +13,7 @@ import 'package:test_application/widgets/themeCrontoller.dart';
 
 class MyDrawer extends StatelessWidget {
 
+  
   
   const MyDrawer({
     Key? key,
@@ -77,6 +82,14 @@ class MyDrawer extends StatelessWidget {
                 themeController().setTheme();
               },
               ),
+            ListTile(
+              title: Text("Log Out",textScaleFactor: 1.2,style: TextStyle(color: context.accentColor),),
+              leading: Icon(CupertinoIcons.return_icon,color: context.accentColor,),
+              onTap: () {
+                context.read<AuthenticationService>().signOut();
+                Navigator.pushNamed(context, MyRoutes.loginRoute);
+              },
+            ),
           ],
         ),
       ),

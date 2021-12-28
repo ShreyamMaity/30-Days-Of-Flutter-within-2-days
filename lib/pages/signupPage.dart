@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, file_names, duplicate_ignore, implementation_imports, await_only_futures, avoid_print
+// ignore_for_file: prefer_const_constructors, await_only_futures, avoid_print, unnecessary_string_interpolations
 
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
@@ -7,16 +7,17 @@ import 'package:test_application/utils/routes.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({ Key? key }) : super(key: key);
+class SignupPage extends StatefulWidget {
+  const SignupPage({ Key? key }) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignupPageState extends State<SignupPage> {
 
   FirebaseAuth auth = FirebaseAuth.instance;
+  String username = "";
   String name = "";
   String pass = "";
   bool isPressed = false;
@@ -26,13 +27,14 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       setState(() {isPressed = true;});
     await Future.delayed(Duration(milliseconds: 500));
-    var error = await context.read<AuthenticationService>().signIn(email: name, password: pass);
+    var error = await context.read<AuthenticationService>().signUp(email: username, password: pass);
     print(await error);
     if (error != null) {
-      if (error == "Signed In") {
-        Navigator.pushNamed(context, MyRoutes.homeRoute);
+      if (error == "Signed Up") {
+      Navigator.pushNamed(context, MyRoutes.homeRoute);
       }
       showDialog(context: context, builder: (context) => AlertDialog(content: Text("$error"),));}
+    
     setState(() {isPressed = false;});
     }
   }
@@ -46,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
           key: _formKey,
           child: Column(
             children: [
-              Image.asset('assets/images/login_image.png',fit: BoxFit.cover,),
+              Image.asset('assets/images/signup_image.png',fit: BoxFit.cover,),
               SizedBox(height: 20),
               Text('Welcome $name',style: TextStyle(
                 fontSize: 24,
@@ -58,18 +60,34 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(children: [
                   TextFormField(
                     decoration: InputDecoration(
-                      hintText: "Enter Email",
-                      labelText: "Email", 
+                      hintText: "John Smith",
+                      labelText: "Name", 
                     ),
                     validator: (value) {
                       if(value!.isEmpty) {
-                        return 'Email is required';
+                        return 'name is required';
                       }
                       return null;
                     },
                     onChanged: (value) {
                         name = value;
                         setState(() {});
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: "Enter Mail ID",
+                      labelText: "Email", 
+                    ),
+                    validator: (value) {
+                      if(value!.isEmpty) {
+                        return 'email is required';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                        username = value;
                     },
                     keyboardType: TextInputType.emailAddress,
                   ),
@@ -101,12 +119,13 @@ class _LoginPageState extends State<LoginPage> {
                       onTap: (){
                         moveToHome(context);
                       },
+                      
                       child: AnimatedContainer(
                         duration: Duration(milliseconds: 200),
                         width: isPressed?50: 150,
                         height: 50,
                         alignment: Alignment.center,
-                        child: isPressed? Icon(Icons.done, color: Colors.white,): Text('Login',style: TextStyle(
+                        child: isPressed? Icon(Icons.done, color: Colors.white,): Text('Sign Up',style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -118,9 +137,9 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: 20,),
                   TextButton(
                     onPressed: (){
-                      Navigator.pushNamed(context, MyRoutes.signupRoute);;
+                      Navigator.pushNamed(context, MyRoutes.loginRoute);
                     },
-                    child: Text('Not Registered?',style: TextStyle(
+                    child: Text('Login Instead',style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),),
