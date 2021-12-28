@@ -32,7 +32,8 @@ class HomeDetailPage extends StatelessWidget {
       ),
       body: SafeArea(
         bottom: false,
-        child: Column(children: [
+        child: Column(
+          children: [
           Hero(
             tag: Key(catalog.id.toString()),
             child: Image.network(catalog.image)
@@ -44,15 +45,17 @@ class HomeDetailPage extends StatelessWidget {
               child: Container(
                 color: context.cardColor,
                 width: context.screenWidth,
-                child: Column(
-                  children: [
-                    catalog.name.text.xl4.color(context.accentColor).bold.make(),
-                    catalog.desc.text.xl.make(),
-                    10.heightBox,
-                    "Labore lorem no consetetur erat sed dolor. Labore lorem no eos amet ipsum, et dolor duo et elitr sanctus kasd sea nonumy dolores, sea sed no magna aliquyam, elitr sadipscing clita ipsum sanctus ea duo erat lorem, aliquyam elitr no nonumy labore voluptua sea clita sea, nonumy dolor aliquyam consetetur."
-                    .text.make().p16()
-                  ],
-                  ).py64(),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      catalog.name.text.xl4.color(context.accentColor).bold.make(),
+                      catalog.desc.text.xl.make(),
+                      10.heightBox,
+                      "Labore lorem no consetetur erat sed dolor. Labore lorem no eos amet ipsum, et dolor duo et elitr sanctus kasd sea nonumy dolores, sea sed no magna aliquyam, elitr sadipscing clita ipsum sanctus ea duo erat lorem, aliquyam elitr no nonumy labore voluptua sea clita sea, nonumy dolor aliquyam consetetur."
+                      .text.make().p16()
+                    ],
+                    ).py64(),
+                ),
               ),
             ))
         ],),
