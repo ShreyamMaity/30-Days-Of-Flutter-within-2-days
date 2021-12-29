@@ -30,7 +30,7 @@ class _SignupPageState extends State<SignupPage> {
       await Future.delayed(Duration(milliseconds: 500));
       var error = await context
           .read<AuthenticationService>()
-          .signUp(email: username, password: pass);
+          .signUp(email: username, password: pass, name: name);
       print(await error);
       if (error != null) {
         if (error == "Signed Up") {

@@ -54,8 +54,8 @@ class MyApp extends StatelessWidget {
             theme: MyTheme.lightTheme(context),
             debugShowCheckedModeBanner: false,
             darkTheme: MyTheme.darkTheme(context),
-            // initialRoute: MyRoutes.authWrapper,
-            initialRoute: MyRoutes.profileRoute,
+            initialRoute: MyRoutes.authWrapper,
+            // initialRoute: MyRoutes.profileRoute,
             routes: {
               MyRoutes.authWrapper: (context) => AuthenticationWrapper(),
               MyRoutes.homeRoute : (context) => Homepage(),

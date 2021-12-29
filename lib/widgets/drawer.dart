@@ -20,9 +20,13 @@ class MyDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ImageUrl =
-        "https://res.cloudinary.com/practicaldev/image/fetch/s--AUy_lRQk--/c_fill,f_auto,fl_progressive,h_320,q_auto,w_320/https://dev-to-uploads.s3.amazonaws.com/uploads/user/profile_image/731756/8fc92f26-beed-427b-8f98-2ee186963428.jpeg";
+    
     final user = UserPrefernces.MyUser;
+    var name = '';
+    var email = '';
+
+
+
     launchMailto() async {
       final mailtoLink = Mailto(
         to: ['sm8967724231@gmail.com'],
