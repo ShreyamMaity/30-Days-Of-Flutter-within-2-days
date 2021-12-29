@@ -7,6 +7,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:test_application/pages/profilePage.dart';
 import 'package:test_application/pages/signupPage.dart';
 import 'package:test_application/utils/authService.dart';
 import 'package:test_application/widgets/drawer.dart';
@@ -19,6 +20,7 @@ import 'package:test_application/pages/loginPage.dart';
 import 'package:test_application/utils/routes.dart';
 import 'package:test_application/widgets/themes.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,13 +54,15 @@ class MyApp extends StatelessWidget {
             theme: MyTheme.lightTheme(context),
             debugShowCheckedModeBanner: false,
             darkTheme: MyTheme.darkTheme(context),
-            initialRoute: MyRoutes.authWrapper,
+            // initialRoute: MyRoutes.authWrapper,
+            initialRoute: MyRoutes.profileRoute,
             routes: {
               MyRoutes.authWrapper: (context) => AuthenticationWrapper(),
               MyRoutes.homeRoute : (context) => Homepage(),
               MyRoutes.loginRoute: (context) => LoginPage(),
               MyRoutes.signupRoute: (context) => SignupPage(),
               MyRoutes.cartRoute: (context) => Cartpage(),
+              MyRoutes.profileRoute : (context) => ProfilePage(),
             },
           
           ),

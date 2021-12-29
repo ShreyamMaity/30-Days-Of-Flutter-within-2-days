@@ -13,6 +13,7 @@ import 'package:test_application/widgets/home_widgets/catalogList.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 
@@ -34,13 +35,21 @@ class _HomepageState extends State<Homepage> {
     // TODO: implement initState
     super.initState();
     loadData();
+    loadDataFromFirebase();
+  }
+
+  loadDataFromFirebase(){
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    firestore.collection('catalogue').get().then((value) {
+      value.docs.forEach((element) {
+        print(element.data());
+      });
+    });
   }
 
   loadData() async {
     await Future.delayed(Duration(seconds: 2));
     // final catalogJson = await rootBundle.loadString("./assets/files/catalog.json");
-
-    // final response = await http.get(Uri.parse(url));
 
     var request = http.Request('GET', Uri.parse(url));
     request.headers.addAll(headers);
