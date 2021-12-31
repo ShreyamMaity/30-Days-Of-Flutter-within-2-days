@@ -1,11 +1,11 @@
-// ignore_for_file: prefer_const_declarations, non_constant_identifier_names, prefer_const_constructors, dead_code
+// ignore_for_file: prefer_const_declarations, non_constant_identifier_names, prefer_const_constructors, dead_code, implementation_imports
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
-import 'package:test_application/models/profile.dart';
 import 'package:test_application/utils/authService.dart';
 import 'package:test_application/utils/routes.dart';
+import 'package:test_application/widgets/profileDrawer.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:test_application/widgets/themeCrontoller.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -20,11 +20,6 @@ class MyDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-    final user = UserPrefernces.MyUser;
-    var name = '';
-    var email = '';
-
 
 
     launchMailto() async {
@@ -44,17 +39,7 @@ class MyDrawer extends StatelessWidget {
           children: [
             DrawerHeader(
               padding: EdgeInsets.zero,
-              child: UserAccountsDrawerHeader(
-                margin: EdgeInsets.zero,
-                decoration: BoxDecoration(
-                  color: Colors.deepPurple,
-                ),
-                accountName: Text(user.name),
-                accountEmail: Text(user.email),
-                currentAccountPicture: CircleAvatar(
-                  backgroundImage: NetworkImage(user.image),
-                ),
-              ),
+              child: ProfileDrawer()
             ),
             ListTile(
               leading: Icon(

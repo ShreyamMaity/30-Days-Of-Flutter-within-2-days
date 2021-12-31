@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, duplicate_ignore
 
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:test_application/utils/authService.dart';
 import 'package:test_application/widgets/drawer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -16,7 +16,23 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  User user = UserPrefernces.MyUser;
+
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  loadData() async {
+    await Future.delayed(Duration(seconds: 2));
+    var uid = await FirestoreService().getUserUID();
+    await FirestoreService().loadData(uid);
+    setStateIfMounted(() {});
+  }
+
+  void setStateIfMounted(f) {
+  if (mounted) setState(f);
+}
+  UserInfo user = UserPrefernces.MyUser;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
             height: 20,
           ),
           TextFormField(
-            initialValue: user.name,
+            initialValue: usersname,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -63,7 +79,7 @@ class _ProfilePageState extends State<ProfilePage> {
             height: 20,
           ),
           TextFormField(
-            initialValue: user.email,
+            initialValue: useremail,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),

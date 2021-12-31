@@ -2,7 +2,7 @@ import 'dart:convert';
 
 // ignore_for_file: constant_identifier_names, unnecessary_const, non_constant_identifier_names
 
-class User {
+class UserInfo {
 
   final String image;
   final String name;
@@ -10,7 +10,7 @@ class User {
   final String phone;
   final String gender;
 
-  const User({
+  const UserInfo({
     required this.image,
     required this.name,
     required this.email,
@@ -21,14 +21,14 @@ class User {
   
 
 
-  User copyWith({
+  UserInfo copyWith({
     String? image,
     String? name,
     String? email,
     String? phone,
     String? gender,
   }) {
-    return User(
+    return UserInfo(
       image: image ?? this.image,
       name: name ?? this.name,
       email: email ?? this.email,
@@ -47,8 +47,8 @@ class User {
     };
   }
 
-  factory User.fromMap(Map<String, dynamic> map) {
-    return User(
+  factory UserInfo.fromMap(Map<String, dynamic> map) {
+    return UserInfo(
       image: map['image'] ?? '',
       name: map['name'] ?? '',
       email: map['email'] ?? '',
@@ -59,7 +59,7 @@ class User {
 
   String toJson() => json.encode(toMap());
 
-  factory User.fromJson(String source) => User.fromMap(json.decode(source));
+  factory UserInfo.fromJson(String source) => UserInfo.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -70,7 +70,7 @@ class User {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
   
-    return other is User &&
+    return other is UserInfo &&
       other.image == image &&
       other.name == name &&
       other.email == email &&
@@ -90,7 +90,7 @@ class User {
 
 
 class UserPrefernces{
-  static const MyUser =  User(
+  static const MyUser =  UserInfo(
     image: "https://res.cloudinary.com/practicaldev/image/fetch/s--AUy_lRQk--/c_fill,f_auto,fl_progressive,h_320,q_auto,w_320/https://dev-to-uploads.s3.amazonaws.com/uploads/user/profile_image/731756/8fc92f26-beed-427b-8f98-2ee186963428.jpeg",
      name: "Shreyam MAity",
       email: 'sm8967724231@gmuil.com',

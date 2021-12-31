@@ -1,9 +1,13 @@
 
 
 
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+var usersname ;
+var useremail;
 
 class AuthenticationService{
 
@@ -15,14 +19,7 @@ class AuthenticationService{
     
   Future<String?> signIn({required String email, required String password}) async {
     try {
-      UserCredential result = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-      User? user = result.user;
-      await FirebaseFirestore.instance.collection('userData').doc(user!.uid).get().then((value) {
-        var usersname = value.data()!['firstName'];
-        var useremail = value.data()!['email'];
-        print(usersname);
-        print(useremail);
-      } );
+      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
       return 'Signed In';
     }on FirebaseAuthException catch (e) {
       return e.message;
@@ -48,3 +45,21 @@ class AuthenticationService{
   }
 
 }
+
+
+class FirestoreService{
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  Future<String?> getUserUID() async {
+    final User? user = auth.currentUser;
+    return user!.uid;
+}
+
+Future<void> loadData(uid) async {
+  await FirebaseFirestore.instance.collection('userData').doc(uid).get().then((value) {
+         usersname = value.data()!['firstName'];
+         useremail = value.data()!['email'];
+      } );
+      }
+  
+  }
