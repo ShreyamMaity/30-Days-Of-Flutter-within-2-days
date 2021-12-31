@@ -2,6 +2,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 import 'package:test_application/utils/authService.dart';
 import 'package:test_application/widgets/drawer.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -17,6 +18,14 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
 
+  bool isPressed = false;
+  var name = '';
+  var email = '';
+  var phone = '';
+  var gender = '';
+
+
+  @override
   void initState() {
     super.initState();
     loadData();
@@ -25,13 +34,34 @@ class _ProfilePageState extends State<ProfilePage> {
   loadData() async {
     await Future.delayed(Duration(seconds: 2));
     var uid = await FirestoreService().getUserUID();
-    await FirestoreService().loadData(uid);
+    await FirestoreService().loadData(uid: uid.toString());
     setStateIfMounted(() {});
   }
 
   void setStateIfMounted(f) {
   if (mounted) setState(f);
-}
+  }
+
+  SaveData() async {
+      setState(() {
+        isPressed = true;
+      });
+      await Future.delayed(Duration(milliseconds: 500));
+      var uid = await FirestoreService().getUserUID();
+      var error = await FirestoreService().updateData(phone: phone, gender: gender, uid: uid.toString());
+      print(await error);
+      if (error != null) {
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  content: Text("$error"),
+                ));
+      }
+      setState(() {
+        isPressed = false;
+      });
+  }
+
   UserInfo user = UserPrefernces.MyUser;
 
   @override
@@ -56,6 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
             height: 20,
           ),
           TextFormField(
+            enabled: false,
             initialValue: usersname,
             decoration: InputDecoration(
               border: OutlineInputBorder(
@@ -72,13 +103,19 @@ class _ProfilePageState extends State<ProfilePage> {
             },
             keyboardType: TextInputType.name,
             onChanged: (value) {
-              var name = value;
+              if(value == ''){
+                name = usersname;
+              }
+              else{
+                name = value;
+              }
             },
           ),
           SizedBox(
             height: 20,
           ),
           TextFormField(
+            enabled: false,
             initialValue: useremail,
             decoration: InputDecoration(
               border: OutlineInputBorder(
@@ -95,14 +132,19 @@ class _ProfilePageState extends State<ProfilePage> {
             },
             keyboardType: TextInputType.name,
             onChanged: (value) {
-              var email = value;
+              if(value == ''){
+                email = useremail;
+              }
+              else{
+                email = value;
+              }
             },
           ),
           SizedBox(
             height: 20,
           ),
           TextFormField(
-            initialValue: user.phone,
+            initialValue: usersmob,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -118,14 +160,19 @@ class _ProfilePageState extends State<ProfilePage> {
             },
             keyboardType: TextInputType.name,
             onChanged: (value) {
-              var phone = value;
+              if(value == ''){
+                phone = usersmob;
+              }
+              else{
+                phone = value;
+              }
             },
           ),
           SizedBox(
             height: 20,
           ),
           TextFormField(
-            initialValue: user.gender,
+            initialValue: usersgender,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -141,10 +188,37 @@ class _ProfilePageState extends State<ProfilePage> {
             },
             keyboardType: TextInputType.name,
             onChanged: (value) {
-              var gender = value;
+              if(value == ''){
+                gender = usersgender;
+              }
+              else{
+                gender = value;
+              }
             },
           ),
-
+          SizedBox(height: 20,),
+          Material(
+            borderRadius: BorderRadius.circular(isPressed ? 50 : 8),
+            color: isPressed ? Colors.blue : context.theme.buttonColor,
+            child: InkWell(
+              onTap: () {
+                SaveData();
+              },
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 200),
+                width: isPressed ? 50 : 150,
+                height: 50,
+                alignment: Alignment.center,
+                child: isPressed? Icon(Icons.done,color: Colors.white,): Text('Update',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  ),
+                  ),
+              ),
+            ),
+          ),
         ],
       ),
     );

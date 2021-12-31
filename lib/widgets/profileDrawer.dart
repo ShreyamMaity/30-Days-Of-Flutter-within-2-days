@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_application/models/profile.dart';
 import 'package:test_application/utils/authService.dart';
-import 'package:velocity_x/velocity_x.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ProfileDrawer extends StatefulWidget {
@@ -22,7 +21,7 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
   loadData() async {
     await Future.delayed(Duration(seconds: 2));
     var uid = await FirestoreService().getUserUID();
-    await FirestoreService().loadData(uid);
+    await FirestoreService().loadData(uid: uid.toString());
     setStateIfMounted(() {});
   }
 
@@ -55,6 +54,7 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
         accountEmail: Text(useremail),
         currentAccountPicture: CircleAvatar(
           backgroundImage: NetworkImage(user.image),
+          // backgroundImage: NetworkImage('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'),
         ),
       );
     }

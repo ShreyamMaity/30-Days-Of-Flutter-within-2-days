@@ -8,6 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 var usersname ;
 var useremail;
+var usersmob;
+var usersgender;
 
 class AuthenticationService{
 
@@ -32,7 +34,7 @@ class AuthenticationService{
       UserCredential result = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
       await FirebaseFirestore.instance.collection('userData')
-      .doc(user!.uid).set({ 'name': name,'email': email,});
+      .doc(user!.uid).set({ 'name': name,'email': email, 'phone': 'enter mobile number', 'gender': 'set gender'});
       return 'Signed Up';
     }on FirebaseAuthException catch (e) {
       return e.message;
@@ -52,14 +54,25 @@ class FirestoreService{
 
   Future<String?> getUserUID() async {
     final User? user = auth.currentUser;
-    return user!.uid;
-}
+    return user?.uid;
+  }
 
-Future<void> loadData(uid) async {
-  await FirebaseFirestore.instance.collection('userData').doc(uid).get().then((value) {
-         usersname = value.data()!['firstName'];
+  Future<void> loadData({required String uid}) async {
+    await FirebaseFirestore.instance.collection('userData').doc(uid).get().then((value) {
+         usersname = value.data()!['name'];
          useremail = value.data()!['email'];
+         usersmob = value.data()!['phone'];
+         usersgender = value.data()!['gender'];
       } );
-      }
+    }
+
+  Future<String?> updateData({required String phone,required String gender,required String uid}) async {
+    await FirebaseFirestore.instance.collection('userData').doc(uid).update(
+      {
+       'phone': phone,
+        'gender': gender});
+        return "Profile Data Updated";
+        }
+  
   
   }
