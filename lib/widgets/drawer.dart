@@ -3,7 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
-import 'package:test_application/utils/authService.dart';
+import 'package:test_application/utils/firebaseService.dart';
 import 'package:test_application/utils/routes.dart';
 import 'package:test_application/widgets/profileDrawer.dart';
 import 'package:velocity_x/velocity_x.dart';

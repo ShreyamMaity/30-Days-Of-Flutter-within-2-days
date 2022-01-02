@@ -1,8 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_declarations
 
 import 'package:flutter/material.dart';
-import 'package:test_application/models/profile.dart';
-import 'package:test_application/utils/authService.dart';
+import 'package:test_application/utils/firebaseService.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ProfileDrawer extends StatefulWidget {
@@ -21,6 +20,7 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
   loadData() async {
     await Future.delayed(Duration(seconds: 2));
     var uid = await FirestoreService().getUserUID();
+    await CloudstoreService().getImageUrl(uid: uid.toString());
     await FirestoreService().loadData(uid: uid.toString());
     setStateIfMounted(() {});
   }
@@ -31,7 +31,6 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    final user = UserPrefernces.MyUser;
 
     if (usersname == null) {
       // return CircularProgressIndicator().centered().expand();
@@ -53,7 +52,7 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
         accountName: Text(usersname),
         accountEmail: Text(useremail),
         currentAccountPicture: CircleAvatar(
-          backgroundImage: NetworkImage(user.image),
+          backgroundImage: NetworkImage(profilePic),
           // backgroundImage: NetworkImage('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'),
         ),
       );

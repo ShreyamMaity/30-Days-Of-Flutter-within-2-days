@@ -1,13 +1,13 @@
-// ignore_for_file: prefer_const_constructors, duplicate_ignore
+// ignore_for_file: prefer_const_constructors, duplicate_ignore, deprecated_member_use, unnecessary_null_comparison, non_constant_identifier_names
 
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
-import 'package:test_application/utils/authService.dart';
+import 'package:test_application/utils/firebaseService.dart';
 import 'package:test_application/widgets/drawer.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:image_picker/image_picker.dart';
 
-import 'package:test_application/models/profile.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -23,7 +23,8 @@ class _ProfilePageState extends State<ProfilePage> {
   var email = '';
   var phone = '';
   var gender = '';
-
+  final ImagePicker _picker = ImagePicker();
+  PickedFile? _imageFile;
 
   @override
   void initState() {
@@ -34,6 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
   loadData() async {
     await Future.delayed(Duration(seconds: 2));
     var uid = await FirestoreService().getUserUID();
+    await CloudstoreService().getImageUrl(uid: uid.toString());
     await FirestoreService().loadData(uid: uid.toString());
     setStateIfMounted(() {});
   }
@@ -42,13 +44,22 @@ class _ProfilePageState extends State<ProfilePage> {
   if (mounted) setState(f);
   }
 
-  SaveData() async {
+  void SaveData() async {
       setState(() {
         isPressed = true;
       });
       await Future.delayed(Duration(milliseconds: 500));
       var uid = await FirestoreService().getUserUID();
-      var error = await FirestoreService().updateData(phone: phone, gender: gender, uid: uid.toString());
+      if (_imageFile != null) {
+        await CloudstoreService().uploadFile(_imageFile!.path, uid!);
+      }
+      await CloudstoreService().getImageUrl(uid: uid.toString());
+      var error = await FirestoreService().updateData(
+        phone: phone==''?usersmob: phone,
+         gender: gender==''?usersgender: gender,
+          uid: uid.toString(),
+           profilePic: profilePic
+           );
       print(await error);
       if (error != null) {
         showDialog(
@@ -62,10 +73,30 @@ class _ProfilePageState extends State<ProfilePage> {
       });
   }
 
-  UserInfo user = UserPrefernces.MyUser;
+  void takePhoto(ImageSource source) async{
+    final pickedFile = await _picker.getImage(
+      source: source,
+    );
+    setState(() {
+      _imageFile = pickedFile!;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    if (usersname == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Profile"),
+        ),
+        drawer: MyDrawer(),
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    else{
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -77,8 +108,9 @@ class _ProfilePageState extends State<ProfilePage> {
         physics: BouncingScrollPhysics(),
         children: [
           ImageWidget(
-            imagePath: user.image,
+            imagePath: _imageFile==null? NetworkImage(profilePic): FileImage(File(_imageFile!.path)) as ImageProvider,
             onClicked: () async {
+              takePhoto(ImageSource.gallery);
               print('clicked');
             },
           ),
@@ -103,12 +135,7 @@ class _ProfilePageState extends State<ProfilePage> {
             },
             keyboardType: TextInputType.name,
             onChanged: (value) {
-              if(value == ''){
-                name = usersname;
-              }
-              else{
                 name = value;
-              }
             },
           ),
           SizedBox(
@@ -132,12 +159,7 @@ class _ProfilePageState extends State<ProfilePage> {
             },
             keyboardType: TextInputType.name,
             onChanged: (value) {
-              if(value == ''){
-                email = useremail;
-              }
-              else{
                 email = value;
-              }
             },
           ),
           SizedBox(
@@ -160,12 +182,7 @@ class _ProfilePageState extends State<ProfilePage> {
             },
             keyboardType: TextInputType.name,
             onChanged: (value) {
-              if(value == ''){
-                phone = usersmob;
-              }
-              else{
                 phone = value;
-              }
             },
           ),
           SizedBox(
@@ -188,12 +205,7 @@ class _ProfilePageState extends State<ProfilePage> {
             },
             keyboardType: TextInputType.name,
             onChanged: (value) {
-              if(value == ''){
-                gender = usersgender;
-              }
-              else{
                 gender = value;
-              }
             },
           ),
           SizedBox(height: 20,),
@@ -223,10 +235,11 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+  }
 }
 
 class ImageWidget extends StatelessWidget {
-  final String imagePath;
+  final ImageProvider imagePath;
   final VoidCallback onClicked;
   const ImageWidget({
     Key? key,
@@ -277,14 +290,13 @@ Widget buildCircle(
   );
 }
 
-Widget buildImage(String imagePath, VoidCallback onClicked) {
-  final image = NetworkImage(imagePath);
+Widget buildImage(ImageProvider imagePath, VoidCallback onClicked) {
 
   return ClipOval(
     child: Material(
       color: Colors.transparent,
       child: Ink.image(
-        image: image,
+        image: imagePath,
         fit: BoxFit.cover,
         height: 128,
         width: 128,

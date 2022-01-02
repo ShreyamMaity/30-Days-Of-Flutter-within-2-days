@@ -9,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:test_application/pages/profilePage.dart';
 import 'package:test_application/pages/signupPage.dart';
-import 'package:test_application/utils/authService.dart';
+import 'package:test_application/utils/firebaseService.dart';
 import 'package:test_application/widgets/drawer.dart';
 import 'package:test_application/widgets/themeCrontoller.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -54,8 +54,8 @@ class MyApp extends StatelessWidget {
             theme: MyTheme.lightTheme(context),
             debugShowCheckedModeBanner: false,
             darkTheme: MyTheme.darkTheme(context),
-            initialRoute: MyRoutes.authWrapper,
-            // initialRoute: MyRoutes.profileRoute,
+            // initialRoute: MyRoutes.authWrapper,
+            initialRoute: MyRoutes.profileRoute,
             routes: {
               MyRoutes.authWrapper: (context) => AuthenticationWrapper(),
               MyRoutes.homeRoute : (context) => Homepage(),
