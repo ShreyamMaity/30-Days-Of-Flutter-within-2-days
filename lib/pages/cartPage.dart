@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_application/core/store.dart';
 import 'package:test_application/models/cart.dart';
+import 'package:test_application/utils/StripeService.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class Cartpage extends StatelessWidget {
@@ -26,9 +27,21 @@ class Cartpage extends StatelessWidget {
 }
 
 
-class _CartTotal extends StatelessWidget {
+class _CartTotal extends StatefulWidget {
   const _CartTotal({ Key? key }) : super(key: key);
+  
+  @override
+  State<_CartTotal> createState() => _CartTotalState();
+}
+class _CartTotalState extends State<_CartTotal> {
 
+  void payment() async {
+    await StripeService().makePayment(context);
+    setState(() {
+      
+    });
+    
+  }
   @override
   Widget build(BuildContext context) {
     final CartModel _cart = (VxState.store as MyStore).cart;
@@ -45,7 +58,7 @@ class _CartTotal extends StatelessWidget {
         30.widthBox,
         ElevatedButton(
           onPressed: (){
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: "Buying Not Supported yet.".text.make(),));
+            payment();
           },
           style: ButtonStyle(backgroundColor: MaterialStateProperty.all(context.theme.buttonColor)),
          child: "Buy".text.white.make()

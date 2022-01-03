@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,6 +28,7 @@ Future<void> main() async {
   await GetStorage.init();
   await Firebase.initializeApp();
   await dotenv.load(fileName: ".env");
+  Stripe.publishableKey = dotenv.env['stripePubKey'].toString();
   runApp(VxState(
     store: MyStore(),
     child: MyApp())
@@ -54,8 +56,8 @@ class MyApp extends StatelessWidget {
             theme: MyTheme.lightTheme(context),
             debugShowCheckedModeBanner: false,
             darkTheme: MyTheme.darkTheme(context),
-            // initialRoute: MyRoutes.authWrapper,
-            initialRoute: MyRoutes.profileRoute,
+            initialRoute: MyRoutes.authWrapper,
+            // initialRoute: MyRoutes.profileRoute,
             routes: {
               MyRoutes.authWrapper: (context) => AuthenticationWrapper(),
               MyRoutes.homeRoute : (context) => Homepage(),
