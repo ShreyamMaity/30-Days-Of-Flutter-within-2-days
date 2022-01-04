@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use, prefer_const_constructors
 
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -11,8 +12,8 @@ class StripeService{
 
   Map<String, dynamic>? paymentIntentData;
 
-  Future<void> makePayment(context) async {
-    paymentIntentData = await createPaymentIntent('20','inr');
+  Future<bool> makePayment(context,{required String amount}) async {
+    paymentIntentData = await createPaymentIntent(amount,'inr');
     
     await Stripe.instance.initPaymentSheet(
       paymentSheetParameters: SetupPaymentSheetParameters(
@@ -23,10 +24,11 @@ class StripeService{
         merchantDisplayName: 'Rey',
       ),
       );
-      displayPaymentSheet(context);
+      Future<bool> isDone =  displayPaymentSheet(context);
+      return isDone;   
   }
 
-    Future<void> displayPaymentSheet(context) async{
+    Future<bool> displayPaymentSheet(context) async{
         try {
           await Stripe.instance.presentPaymentSheet(
             parameters: PresentPaymentSheetParameters(
@@ -39,10 +41,12 @@ class StripeService{
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('Payment Successful'),
           ));
+          return true;
         } on StripeException catch(e){
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('Payment Failed'),
           ));
+          return false;
         }
     }
 

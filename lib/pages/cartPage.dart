@@ -35,15 +35,25 @@ class _CartTotal extends StatefulWidget {
 }
 class _CartTotalState extends State<_CartTotal> {
 
-  void payment() async {
-    await StripeService().makePayment(context);
+  bool isButtAct = true;
+
+  Future<bool> payment(amount) async {
+    bool isDone = await StripeService().makePayment(context, amount: amount.toString());
     setState(() {
       
     });
-    
+    return isDone;
   }
+
+  void removeIteams(_cart){
+    for (var i = 0; i < _cart.items.length+1; i++) {
+      RemoveMutation(item: _cart.items[0]);
+    } 
+  }
+
   @override
   Widget build(BuildContext context) {
+    VxState.watch(context,on: [RemoveMutation]);
     final CartModel _cart = (VxState.store as MyStore).cart;
     return SizedBox(
       height: 200,
@@ -57,10 +67,20 @@ class _CartTotalState extends State<_CartTotal> {
         ),
         30.widthBox,
         ElevatedButton(
-          onPressed: (){
-            payment();
-          },
-          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(context.theme.buttonColor)),
+          onPressed: _cart.items.isNotEmpty? isButtAct? () async{
+            setState(() {
+              isButtAct = false;
+            });
+           await payment(_cart.totalPrice)==true?removeIteams(_cart):null;
+           setState(() {
+              isButtAct = true;
+            });
+          }:null :null,
+          style: _cart.items.isNotEmpty? isButtAct? ButtonStyle(backgroundColor: MaterialStateProperty.all(context.theme.buttonColor)):ElevatedButton.styleFrom(
+            onSurface: Colors.blue,
+          ) : ElevatedButton.styleFrom(
+            onSurface: Colors.blue,
+          ),
          child: "Buy".text.white.make()
          ).w32(context)
       ],
