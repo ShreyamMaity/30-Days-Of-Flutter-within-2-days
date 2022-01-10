@@ -12,6 +12,7 @@ class ProfileDrawer extends StatefulWidget {
 }
 
 class _ProfileDrawerState extends State<ProfileDrawer> {
+  @override
   void initState() {
     super.initState();
     loadData();

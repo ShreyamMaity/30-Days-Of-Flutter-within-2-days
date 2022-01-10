@@ -1,4 +1,4 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe, prefer_const_literals_to_create_immutables, deprecated_member_use
+// ignore_for_file: import_of_legacy_library_into_null_safe, prefer_const_literals_to_create_immutables, deprecated_member_use, prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:test_application/core/store.dart';
